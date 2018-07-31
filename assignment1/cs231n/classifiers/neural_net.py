@@ -75,7 +75,12 @@ class TwoLayerNet(object):
     # Store the result in the scores variable, which should be an array of      #
     # shape (N, C).                                                             #
     #############################################################################
-    pass
+
+    h1 = np.maximum(0, np.dot(X, W1) + b1)
+    scores = np.dot(h1, W2) + b2
+    scores -= scores.max(axis=1)
+    scores = np.exp(scores)
+
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
@@ -92,7 +97,16 @@ class TwoLayerNet(object):
     # in the variable loss, which should be a scalar. Use the Softmax           #
     # classifier loss.                                                          #
     #############################################################################
-    pass
+
+    denominator = np.sum(scores, axis=1)
+    # since we're subtracting the max score from each line, the actual label score will be lower
+    # than 0 if it was not selected
+    actual_label_scores = scores[range(X.shape[0]), y]
+    # dividing the entire array by the sum of scores
+    loss = actual_label_scores / denominator
+    # making it negative as the loss should be greater than 0 for incorrect classification and adding the regularization
+    loss = - (np.sum(np.log(loss)) / X.shape[0]) + reg * (np.sum(W1 ** 2) + np.sum(W2 **2))
+
     #############################################################################
     #                              END OF YOUR CODE                             #
     #############################################################################
