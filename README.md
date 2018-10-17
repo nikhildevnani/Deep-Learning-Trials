@@ -1,1 +1,1 @@
-# Implementation of various Deep Learning methods and applicaitons
+# Implementation of various Deep Learning methods and applicaitons from cs231n
